@@ -1,0 +1,25 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag image
+
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login hub.docker.com -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push image
+        run: |
+          VERSION="1.41"
+          docker tag image abel0b/rust-dev:$VERSION
+          docker push abel0b/rust-dev:$VERSION
