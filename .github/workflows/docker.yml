@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    tags:
+      - v*
+
 jobs:
   push:
     runs-on: ubuntu-latest
@@ -22,6 +25,7 @@ jobs:
 
       - name: Push image
         run: |
+          [[ "$VERSION" == "master" ]] && VERSION=latest
           echo $VERSION
           docker tag image abel0b/rust-dev:$VERSION
           docker push abel0b/rust-dev:$VERSION
