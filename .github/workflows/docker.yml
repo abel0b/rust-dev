@@ -1,4 +1,4 @@
-name: Docker
+name: docker
 
 on:
   push:
@@ -20,6 +20,6 @@ jobs:
 
       - name: Push image
         run: |
-          VERSION="1.41"
+          VERSION="$(git describe --tags | sed 's/v//')"
           docker tag image abel0b/rust-dev:$VERSION
           docker push abel0b/rust-dev:$VERSION
